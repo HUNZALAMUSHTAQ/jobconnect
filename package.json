@@ -1,10 +1,10 @@
 {
-  "name": "lexos",
+  "name": "jobconnect",
   "version": "1.7.0",
-  "description": "Lexos is an AI tool",
+  "description": "jobconnect is an AI tool",
   "bin": "bin/createNodejsApp.js",
   "main": "src/index.js",
-  "author": "leXos",
+  "author": "jobconnect",
   "license": "MIT",
   "engines": {
     "node": ">=12.0.0"
