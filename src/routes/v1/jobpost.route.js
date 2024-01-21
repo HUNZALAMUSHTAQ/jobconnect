@@ -17,4 +17,5 @@ router
   .put(auth(), validate(postValidation.updateJobPost), postController.updateJobPost)
   .delete(auth(), validate(postValidation.getJobPost), postController.deleteJobPost);
 
+router.post('/:jobId/apply', auth(), validate(postValidation.applyJob), postController.applyForJob);
 module.exports = router;

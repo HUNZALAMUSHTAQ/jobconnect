@@ -1,6 +1,6 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
-const { JobPost } = require('../models');
+const { JobPost, User  } = require('../models');
 const mongoose = require('mongoose');
 
 const createJobPost = catchAsync(async (req, res) => {
@@ -48,10 +48,47 @@ const deleteJobPost = catchAsync(async (req, res) => {
   res.json({ message: 'Job post deleted successfully' });
 });
 
+const applyForJob = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    // Check if jobId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+      return res.status(httpStatus.BAD_REQUEST).json({ message: 'Invalid ObjectId for job' });
+    }
+
+    // Check if the job post exists
+    const jobPost = await JobPost.findById(jobId);
+    if (!jobPost) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: 'Job post not found' });
+    }
+    console.log(jobPost)
+    // Check if the user has already applied for the job
+    const user = req.user; // Assuming you're using authentication middleware to set req.user
+    const hasApplied = jobPost.appplications.includes(user._id);
+
+    if (hasApplied) {
+      return res.status(httpStatus.OK).json({ message: 'You have already applied for this job' });
+    }
+
+    // Add the user to the job post's applications array
+    jobPost.appplications.push(user._id);
+    await jobPost.save();
+
+    // Add the job post to the user's appliedJobs array
+
+
+    return res.status(httpStatus.CREATED).json({ message: 'Job application successful' });
+  } catch (error) {
+    console.error(error);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: 'Internal Server Error' });
+  }
+};
 module.exports = {
   getJobPosts,
   getJobPostById,
   createJobPost,
   updateJobPost,
   deleteJobPost,
+  applyForJob
 };

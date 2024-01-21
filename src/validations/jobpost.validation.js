@@ -36,8 +36,16 @@ const getJobPost = {
     jobId: Joi.string().required(),
   }),
 };
+
+const applyJob = {
+  params: Joi.object({
+    jobId: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   createJobPost,
   updateJobPost,
-  getJobPost
+  getJobPost,
+  applyJob
 };

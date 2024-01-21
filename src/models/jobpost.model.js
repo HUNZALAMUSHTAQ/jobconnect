@@ -50,6 +50,7 @@ const jobPostSchema = mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    appplications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   },
   {
     timestamps: true,
