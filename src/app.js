@@ -16,6 +16,18 @@ const ApiError = require('./utils/ApiError');
 const path = require('path')
 const app = express();
 
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, 'uploads/'); // Save uploaded files to the 'uploads' folder
+//   },
+//   filename: function (req, file, cb) {
+//     // Generate a unique filename for uploaded files
+//     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//   }
+// });
+
+// Initialize multer with the storage configuration
+// const upload = multer({ storage: storage });
 
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
@@ -26,7 +38,8 @@ if (config.env !== 'test') {
 app.use(helmet());
 
 // parse json request body
-// app.use(express.json());
+app.use(express.json());
+app.use("/uploads", express.static('public'));
 
 // for stripe webhook
 app.use((req, res, next) => {
